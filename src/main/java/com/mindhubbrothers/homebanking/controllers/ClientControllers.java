@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
 @RestController
-@RequestMapping("/api/clients")
+@RequestMapping("/api/Clients")
 public class ClientControllers {
     @Autowired
     private ClientRepository clientRepository;

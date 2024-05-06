@@ -2,8 +2,8 @@ package com.mindhubbrothers.homebanking.models;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Client {
@@ -17,7 +17,7 @@ public class Client {
     private String clientEmail;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
-    private Set<Account> accounts = new HashSet<>();
+    private List<Account> accounts = new ArrayList<>();
 
     public Client() {
     }
@@ -56,7 +56,7 @@ public class Client {
         this.firstName = firstName;
     }
 
-    public Set<Account> getAccounts() {
+    public List<Account> getAccounts() {
         return accounts;
     }
 

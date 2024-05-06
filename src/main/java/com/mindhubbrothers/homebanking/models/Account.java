@@ -3,11 +3,13 @@ package com.mindhubbrothers.homebanking.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Account {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String number;
@@ -19,6 +21,9 @@ public class Account {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="Client_id")
     private Client owner;
+
+    @OneToMany(mappedBy = "hostAccount", fetch = FetchType.EAGER)
+    private Set<Transaction> transactions = new HashSet<>();
 
     public Account() {
     }
@@ -65,6 +70,15 @@ public class Account {
         this.owner = owner;
     }
 
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void addTransaction (Transaction transaction){
+        transaction.setHostAccount(this);
+        transactions.add(transaction);
+    }
+
     @Override
     public String toString() {
         return "Account{" +
@@ -72,6 +86,7 @@ public class Account {
                 ", number='" + number + '\'' +
                 ", creationDate=" + creationDate +
                 ", balance=" + balance +
+                ", transactions=" + transactions +
                 '}';
     }
 }
