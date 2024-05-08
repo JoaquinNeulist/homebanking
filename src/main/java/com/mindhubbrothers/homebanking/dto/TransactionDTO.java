@@ -7,6 +7,7 @@ import com.mindhubbrothers.homebanking.models.TypeTransaction;
 import java.time.LocalDateTime;
 
 public class TransactionDTO {
+
     private long id;
 
     private TypeTransaction type;

@@ -3,7 +3,9 @@ package com.mindhubbrothers.homebanking.models;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Client {
@@ -13,11 +15,16 @@ public class Client {
     private long id;
 
     private String firstName;
+
     private String lastName;
+
     private String clientEmail;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private List<Account> accounts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    private Set<ClientLoans> clientLoansSet = new HashSet<>();
 
     public Client() {
     }
@@ -65,6 +72,19 @@ public class Client {
         accounts.add(account);
     }
 
+    public Set<ClientLoans> getClientLoansSet() {
+        return clientLoansSet;
+    }
+
+    public void setClientLoansSet(Set<ClientLoans> clientLoansSet) {
+        this.clientLoansSet = clientLoansSet;
+    }
+
+    public void addClientLoans (ClientLoans clientLoans){
+        clientLoans.setClient(this);
+        clientLoansSet.add(clientLoans);
+    }
+
     @Override
     public String toString() {
         return "Client{" +
@@ -73,6 +93,7 @@ public class Client {
                 ", lastName='" + lastName + '\'' +
                 ", clientEmail='" + clientEmail + '\'' +
                 ", accounts=" + accounts +
+                ", clientLoansSet=" + clientLoansSet +
                 '}';
     }
 }
