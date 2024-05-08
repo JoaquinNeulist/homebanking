@@ -3,9 +3,7 @@ package com.mindhubbrothers.homebanking.dto;
 import com.mindhubbrothers.homebanking.models.ClientLoans;
 import com.mindhubbrothers.homebanking.models.Loans;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class LoansDTO {
