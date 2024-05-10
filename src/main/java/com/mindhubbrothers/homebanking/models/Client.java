@@ -106,6 +106,8 @@ public class Client {
                 ", lastName='" + lastName + '\'' +
                 ", clientEmail='" + clientEmail + '\'' +
                 ", accounts=" + accounts +
+                ", clientLoansSet=" + clientLoansSet +
+                ", cards=" + cards +
                 '}';
     }
 }

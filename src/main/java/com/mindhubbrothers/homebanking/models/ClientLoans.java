@@ -63,4 +63,13 @@ public class ClientLoans {
     public Loans getLoans() {
         return loans;
     }
+
+    @Override
+    public String toString() {
+        return "ClientLoans{" +
+                "id=" + id +
+                ", payments=" + payments +
+                ", amount=" + amount +
+                '}';
+    }
 }

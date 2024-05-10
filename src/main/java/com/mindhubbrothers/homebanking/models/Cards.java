@@ -108,4 +108,15 @@ public class Cards {
         this.owner = owner;
     }
 
+    @Override
+    public String toString() {
+        return "securityCode=" + securityCode +
+                ", thruDate=" + thruDate +
+                ", fromDate=" + fromDate +
+                ", cardHolder='" + cardHolder + '\'' +
+                ", number='" + number + '\'' +
+                ", color=" + color +
+                ", type=" + type +
+                ", id=" + id;
+    }
 }
