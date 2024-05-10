@@ -43,9 +43,9 @@ public class HomebankingApplication {
 			ClientLoans clientLoans3 = new ClientLoans(100000, 24);
 			ClientLoans clientLoans4 = new ClientLoans(400000, 60);
 
-			Cards card1 = new Cards(CardType.DEBIT, CardColor.GOLD, "1234-4321-1247-4621", LocalDate.now(), LocalDate.now().plusYears(5), 421, "Melba Morel" );
-			Cards card2 = new Cards(CardType.CREDIT, CardColor.TITANIUM, "7894-7854-5214-4101", LocalDate.now(), LocalDate.now().plusYears(5), 219, "Melba Morel");
-			Cards card3 = new Cards(CardType.CREDIT, CardColor.SILVER, "9874-9876-5212-4141", LocalDate.now(), LocalDate.now().plusYears(5), 741, "Joaquin Neulist");
+			Cards card1 = new Cards(CardType.DEBIT, CardColor.GOLD, "1234-4321-1247-4621", LocalDate.now(), LocalDate.now().plusYears(5), 421);
+			Cards card2 = new Cards(CardType.CREDIT, CardColor.TITANIUM, "7894-7854-5214-4101", LocalDate.now(), LocalDate.now().plusYears(5), 219);
+			Cards card3 = new Cards(CardType.CREDIT, CardColor.SILVER, "9874-9876-5212-4141", LocalDate.now(), LocalDate.now().plusYears(5), 741);
 
 
 			client1.addCards(card1);

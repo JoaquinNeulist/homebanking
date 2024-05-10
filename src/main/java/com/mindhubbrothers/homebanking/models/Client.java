@@ -95,6 +95,7 @@ public class Client {
     public void addCards(Cards card) {
         card.setOwner(this);
         cards.add(card);
+        card.setCardHolder(this.firstName +" "+ this.lastName);
     }
 
     @Override

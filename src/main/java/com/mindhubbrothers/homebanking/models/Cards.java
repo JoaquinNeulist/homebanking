@@ -31,14 +31,13 @@ public class Cards {
     public Cards() {
     }
 
-    public Cards(CardType type, CardColor color, String number, LocalDate fromDate, LocalDate thruDate, int securityCode, String cardHolder) {
+    public Cards(CardType type, CardColor color, String number, LocalDate fromDate, LocalDate thruDate, int securityCode) {
         this.type = type;
         this.color = color;
         this.number = number;
         this.fromDate = fromDate;
         this.thruDate = thruDate;
         this.securityCode = securityCode;
-        this.cardHolder = cardHolder;
     }
 
     public long getId() {
