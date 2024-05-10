@@ -20,10 +20,10 @@ public class Client {
 
     private String clientEmail;
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "owner")
     private List<Account> accounts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "client")
     private Set<ClientLoans> clientLoansSet = new HashSet<>();
 
     @OneToMany(mappedBy = "owner")

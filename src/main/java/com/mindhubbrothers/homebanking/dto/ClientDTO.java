@@ -31,10 +31,10 @@ public class ClientDTO {
                 .collect(Collectors.toSet());
         this.clientLoanDTOSet = client.getClientLoansSet()
                 .stream()
-                .map(clientLoans -> new ClientLoanDTO(clientLoans))
+                .map(clientLoan -> new ClientLoanDTO(clientLoan))
                 .collect(Collectors.toSet());
         this.cardsDTOS = client.getCards().stream()
-                .map(cards -> new CardsDTO(cards))
+                .map(card -> new CardsDTO(card))
                 .collect(Collectors.toSet());
     }
 

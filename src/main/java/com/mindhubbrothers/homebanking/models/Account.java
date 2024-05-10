@@ -19,7 +19,7 @@ public class Account {
 
     private double balance;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name="Client_id")
     private Client owner;
 

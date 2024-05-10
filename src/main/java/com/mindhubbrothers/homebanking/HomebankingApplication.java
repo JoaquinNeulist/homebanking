@@ -47,7 +47,6 @@ public class HomebankingApplication {
 			Cards card2 = new Cards(CardType.CREDIT, CardColor.TITANIUM, "7894-7854-5214-4101", LocalDate.now(), LocalDate.now().plusYears(5), 219);
 			Cards card3 = new Cards(CardType.CREDIT, CardColor.SILVER, "9874-9876-5212-4141", LocalDate.now(), LocalDate.now().plusYears(5), 741);
 
-
 			client1.addCards(card1);
 			client1.addCards(card2);
 			client2.addCards(card3);
@@ -67,7 +66,6 @@ public class HomebankingApplication {
 
 			mortgageLoan.addClientLoans(clientLoans4);
 			client2.addClientLoans(clientLoans4);
-
 
 			account1.addTransaction(transaction1);
 			account1.addTransaction(transaction2);
