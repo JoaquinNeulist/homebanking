@@ -20,6 +20,8 @@ public class Client {
 
     private String clientEmail;
 
+    private String password;
+
     @OneToMany(mappedBy = "owner")
     private List<Account> accounts = new ArrayList<>();
 
@@ -32,10 +34,11 @@ public class Client {
     public Client() {
     }
 
-    public Client(String firstName, String lastName, String clientEmail) {
+    public Client(String firstName, String lastName, String clientEmail, String password){
         this.firstName = firstName;
         this.lastName = lastName;
         this.clientEmail = clientEmail;
+        this.password = password;
     }
 
     public long getId() {
@@ -66,8 +69,28 @@ public class Client {
         this.firstName = firstName;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public List<Account> getAccounts() {
         return accounts;
+    }
+
+    public Set<ClientLoans> getClientLoansSet() {
+        return clientLoansSet;
+    }
+
+    public Set<Cards> getCards() {
+        return cards;
+    }
+
+    public void setClientLoansSet(Set<ClientLoans> clientLoansSet) {
+        this.clientLoansSet = clientLoansSet;
     }
 
     public void addAccount(Account account){
@@ -75,22 +98,12 @@ public class Client {
         accounts.add(account);
     }
 
-    public Set<ClientLoans> getClientLoansSet() {
-        return clientLoansSet;
-    }
-
-    public void setClientLoansSet(Set<ClientLoans> clientLoansSet) {
-        this.clientLoansSet = clientLoansSet;
-    }
 
     public void addClientLoans (ClientLoans clientLoans){
         clientLoans.setClient(this);
         clientLoansSet.add(clientLoans);
     }
 
-    public Set<Cards> getCards() {
-        return cards;
-    }
 
     public void addCards(Cards card) {
         card.setOwner(this);
