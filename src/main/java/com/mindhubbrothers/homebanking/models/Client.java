@@ -18,9 +18,9 @@ public class Client {
 
     private String lastName;
 
-    private String clientEmail;
+    private String email;
 
-    private String password;
+    public String password;
 
     @OneToMany(mappedBy = "owner")
     private List<Account> accounts = new ArrayList<>();
@@ -34,10 +34,16 @@ public class Client {
     public Client() {
     }
 
-    public Client(String firstName, String lastName, String clientEmail, String password){
+    public Client(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.clientEmail = clientEmail;
+        this.email = email;
+    }
+
+    public Client(String firstName, String lastName, String email, String password){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
         this.password = password;
     }
 
@@ -45,12 +51,12 @@ public class Client {
         return id;
     }
 
-    public String getClientEmail() {
-        return clientEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setClientEmail(String clientEmail) {
-        this.clientEmail = clientEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getLastName() {
@@ -117,7 +123,7 @@ public class Client {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", clientEmail='" + clientEmail + '\'' +
+                ", clientEmail='" + email + '\'' +
                 ", accounts=" + accounts +
                 ", clientLoansSet=" + clientLoansSet +
                 ", cards=" + cards +

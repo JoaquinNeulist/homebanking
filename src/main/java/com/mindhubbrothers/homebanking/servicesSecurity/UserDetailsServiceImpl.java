@@ -14,18 +14,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private ClientRepository clientRepository;
-@Override
-public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    Client client = clientRepository.findByEmail(username);
-    if (client == null){
-        throw new UsernameNotFoundException(username);
-    }
-    return User
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Client client = clientRepository.findByEmail(username);
+        if (client == null){
+          throw new UsernameNotFoundException(username);
+        }
+        return User
             .withUsername(username)
             .password(client.getPassword())
             .roles("CLIENT")
             .build();
-}
+    }
 }
 
 

@@ -15,9 +15,9 @@ public class ClientDTO {
 
     private String lastName;
 
-    private String clientEmail;
+    private String email;
 
-    private String password;
+    public String password;
 
     private Set<AccountDTO> accountsDTO = new HashSet<>();
 
@@ -29,7 +29,7 @@ public class ClientDTO {
         this.id = client.getId();
         this.firstName = client.getFirstName();
         this.lastName = client.getLastName();
-        this.clientEmail = client.getClientEmail();
+        this.email = client.getEmail();
         this.password = client.getPassword();
         this.accountsDTO = client.getAccounts()
                 .stream()
@@ -60,8 +60,8 @@ public class ClientDTO {
         return lastName;
     }
 
-    public String getClientEmail() {
-        return clientEmail;
+    public String getEmail() {
+        return email;
     }
 
     public Set<ClientLoanDTO> getLoans() {
