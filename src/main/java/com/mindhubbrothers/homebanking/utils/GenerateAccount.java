@@ -26,8 +26,12 @@ public class GenerateAccount {
 
     private String generateAccountNumber(){
         Random random = new Random();
-        int randomNumber = random.nextInt(9000)+1000;
-        return "VIN-"+randomNumber;
+        String accountNumber;
+        do {
+            int randomNumber = random.nextInt(9000)+1000;
+            accountNumber = "VIN-"+randomNumber;
+        }while (accountRepository.existsByNumber(accountNumber));
+        return "VIN-"+accountNumber;
     }
 
 }

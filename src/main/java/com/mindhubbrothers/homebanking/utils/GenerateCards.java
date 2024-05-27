@@ -24,7 +24,7 @@ public class GenerateCards {
             return null; //ya tiene una tarjeta del mismo tipo y color
         }
         String cardNumber = generateCardNumber();
-        String cardHolder = client.getFirstName() + " "+ client.getLastName();
+        String cardHolder = client.getFirstName() +" "+ client.getLastName();
         int cvv = generateCVV();
         LocalDate startDate = LocalDate.now();
         LocalDate expirationDate = startDate.plusYears(5);
@@ -38,16 +38,20 @@ public class GenerateCards {
 
     private String generateCardNumber(){
         Random random = new Random();
-        StringBuilder cardNumber = new StringBuilder();
-        for(int i=0; i<4; i++){
-        for (int j=0; j<4; j++){
-            cardNumber.append(random.nextInt(10));
-        }
-        if (i < 3){
-            cardNumber.append("-");
-        }
-        }
-    return cardNumber.toString();
+        String cardNumber;
+        do {
+            StringBuilder stringBuilder = new StringBuilder();
+                for(int i=0; i<4; i++){
+                    for (int j=0; j<4; j++){
+                        stringBuilder.append(random.nextInt(10));
+                        if (i < 3){
+                            stringBuilder.append("-");
+                        }
+                    }
+                }
+                cardNumber = stringBuilder.toString();
+        }while (cardsRepository.existsByNumber(cardNumber));
+    return cardNumber;
     }
 
     private int generateCVV(){
