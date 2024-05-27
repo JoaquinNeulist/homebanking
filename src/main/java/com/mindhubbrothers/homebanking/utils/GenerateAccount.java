@@ -4,7 +4,6 @@ import com.mindhubbrothers.homebanking.models.Account;
 import com.mindhubbrothers.homebanking.models.Client;
 import com.mindhubbrothers.homebanking.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
