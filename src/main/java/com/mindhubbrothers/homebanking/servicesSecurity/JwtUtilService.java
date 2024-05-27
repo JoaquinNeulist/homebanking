@@ -9,11 +9,11 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 
 @Service
 public class JwtUtilService {
+
  private static final SecretKey SECRET_KEY = Jwts.SIG.HS256.key().build();
     //metodo que especifica que quiere firmar el token jwt
     //algoritmo de firma que se va a utilizar para firmar el token
@@ -45,12 +45,13 @@ public class JwtUtilService {
     public boolean isTokenExpired(String token){ return extractExpiration(token).before(new Date());}
 
     private String createToken(Map<String, Object> claims, String username){
+     //Map string-object: clave-valor
      return Jwts
              .builder()
              .claims(claims)
              .subject(username)
              .issuedAt(new Date(System.currentTimeMillis()))
-             .expiration(new Date(System.currentTimeMillis()+ EXPIRATION_TOKEN))
+             .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TOKEN))
              .signWith(SECRET_KEY)
              .compact();
     }

@@ -29,28 +29,35 @@ public class WebConfig {
     public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity)throws Exception{
         httpSecurity
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
+                //aplica la configuracion de cors definida
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
-
+                //Desactiva la proteccion CSRF, la autenticacion basica HTTP y el formulario login predeterminado
+                //CSRF: Cross-Site Request Forgery ()
                 .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(
                         HeadersConfigurer.FrameOptionsConfig::disable
+                        //desactiva las FrameOption
                 ))
                 .authorizeHttpRequests(authorize ->
                         authorize.requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**").permitAll()
+                                .requestMatchers("/api/Clients/**", "/api/Accounts/**", "/api/Transactions/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
+                //permite el acceso a las rutas
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                //añade el filtro Jwt antes del filtro Username...
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        //configura la politica de creacion de sesiones para que sea sin estado
                 );
         return  httpSecurity.build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder(); }
+    public PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder(); } //codificacion de passwords
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)throws Exception{
-        return authenticationConfiguration.getAuthenticationManager();
+        return authenticationConfiguration.getAuthenticationManager(); //autenticacion en la aplicacion
     }
 }

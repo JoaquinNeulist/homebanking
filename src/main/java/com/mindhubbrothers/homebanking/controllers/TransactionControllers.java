@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/transactions")
+@RequestMapping("/api/Transactions")
 public class TransactionControllers {
     @Autowired
     private TransactionRepository transactionRepository;

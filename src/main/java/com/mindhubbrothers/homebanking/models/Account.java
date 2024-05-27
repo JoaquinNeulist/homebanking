@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 @Entity
@@ -79,7 +80,7 @@ public class Account {
         transaction.setHostAccount(this);
         transactions.add(transaction);
     }
-
+    
     @Override
     public String toString() {
         return "Account{" +
