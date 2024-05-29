@@ -97,7 +97,7 @@ public class TransactionControllers {
         }
 
         if (transferDTO.type().equals("DEBIT")) {
-            Transaction debitTransaction = new Transaction(LocalDateTime.now(), transferDTO.description() + " " + transferDTO.sourceAccountNumber(), -transferDTO.amount(), TypeTransaction.DEBIT);
+            Transaction debitTransaction = new Transaction(LocalDateTime.now(), transferDTO.description() + " " + transferDTO.destinationAccountNumber(), -transferDTO.amount(), TypeTransaction.DEBIT);
             debitTransaction.setHostAccount(sourceAccount);
             transactionRepository.save(debitTransaction);
             sourceAccount.setBalance(sourceAccount.getBalance() - transferDTO.amount());
