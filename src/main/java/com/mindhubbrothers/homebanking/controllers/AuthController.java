@@ -87,7 +87,6 @@ public class AuthController {
                 registerDto.firstName(), registerDto.lastName(), registerDto.email(), passwordEncoder.encode(registerDto.password()));
         clientRepository.save(client);
         generateAccount.createAccount(client);
-
         return new ResponseEntity<>("Client and account created succesfully", HttpStatus.CREATED);
     }
 

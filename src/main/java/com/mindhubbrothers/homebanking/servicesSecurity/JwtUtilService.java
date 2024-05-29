@@ -31,6 +31,7 @@ public class JwtUtilService {
      //Analiza el token firmado y devuelve un objeto signed jwt (que contiene las claims firmadas)
      //Obtiene y devuelve el cuerpo del token
  }
+ //T es generico
  public <T> T extractClaim(String token, Function<Claims, T> claimsTFunction){
      final Claims claims = extractAllClaims(token);
      return claimsTFunction.apply(claims);
@@ -38,7 +39,7 @@ public class JwtUtilService {
     //puede devolver una fecha, string, etc.
  }
 
- public String extractUsername(String token){ return extractClaim(token, Claims::getSubject);}
+    public String extractUsername(String token){ return extractClaim(token, Claims::getSubject);}
 
     public Date extractExpiration(String token){ return extractClaim(token, Claims::getExpiration);}
 

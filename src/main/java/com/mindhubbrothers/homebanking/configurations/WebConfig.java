@@ -37,10 +37,10 @@ public class WebConfig {
                 //CSRF: Cross-Site Request Forgery ()
                 .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(
                         HeadersConfigurer.FrameOptionsConfig::disable
-                        //desactiva las FrameOption
+                        //desactiva las FrameOption, acceder console-h2
                 ))
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**").permitAll()
+                        authorize.requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**", "/api/transactions").permitAll()
                                 .requestMatchers("/api/Clients/**", "/api/Accounts/**", "/api/Transactions/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 //permite el acceso a las rutas
