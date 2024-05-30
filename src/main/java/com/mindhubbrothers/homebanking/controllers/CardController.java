@@ -6,9 +6,9 @@ import com.mindhubbrothers.homebanking.models.CardType;
 import com.mindhubbrothers.homebanking.models.Cards;
 import com.mindhubbrothers.homebanking.models.Client;
 import com.mindhubbrothers.homebanking.repositories.CardsRepository;
-import com.mindhubbrothers.homebanking.repositories.ClientRepository;
+import com.mindhubbrothers.homebanking.services.CardsService;
+import com.mindhubbrothers.homebanking.services.ClientService;
 import com.mindhubbrothers.homebanking.utils.GenerateCards;
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +24,13 @@ import java.util.stream.Collectors;
 public class CardController {
 
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientService clientService;
 
     @Autowired
     private GenerateCards generateCards;
 
     @Autowired
-    private CardsRepository cardsRepository;
+    private CardsService cardsService;
 
     @PostMapping("/cards")
     public ResponseEntity<?> createCard(
@@ -39,7 +39,7 @@ public class CardController {
             ){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
-        Client client = clientRepository.findByEmail(currentUserName);
+        Client client = clientService.findByEmail(currentUserName);
         if (client == null){
             return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
         }
@@ -54,11 +54,11 @@ public class CardController {
     public ResponseEntity<?> getCards(){
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
-        Client client = clientRepository.findByEmail(currentUserName);
+        Client client = clientService.findByEmail(currentUserName);
         if (client == null){
             return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
         }
-        List<Cards> cards = cardsRepository.findByOwner(client);
+        List<Cards> cards = cardsService.findByOwner(client);
         List<CardsDTO> cardsDTOS = cards.stream()
                 .map(card->new CardsDTO(card))
                 .collect(Collectors.toList());

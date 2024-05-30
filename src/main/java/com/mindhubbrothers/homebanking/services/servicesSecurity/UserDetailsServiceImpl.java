@@ -1,4 +1,4 @@
-package com.mindhubbrothers.homebanking.servicesSecurity;
+package com.mindhubbrothers.homebanking.services.servicesSecurity;
 
 import com.mindhubbrothers.homebanking.models.Client;
 import com.mindhubbrothers.homebanking.repositories.ClientRepository;

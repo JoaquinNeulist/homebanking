@@ -9,6 +9,9 @@ import com.mindhubbrothers.homebanking.models.TypeTransaction;
 import com.mindhubbrothers.homebanking.repositories.AccountRepository;
 import com.mindhubbrothers.homebanking.repositories.ClientRepository;
 import com.mindhubbrothers.homebanking.repositories.TransactionRepository;
+import com.mindhubbrothers.homebanking.services.AccountService;
+import com.mindhubbrothers.homebanking.services.ClientService;
+import com.mindhubbrothers.homebanking.services.TransactionService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,26 +22,25 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
 public class TransactionControllers {
     @Autowired
-    private TransactionRepository transactionRepository;
+    private TransactionService transactionService;
 
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientService clientService;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
 
     @GetMapping("/")
     public ResponseEntity<?> getTransactions(){
-        List<Transaction> transactions = transactionRepository.findAll();
+        List<Transaction> transactions = transactionService.findAllTransactions();
         if (!transactions.isEmpty()){
-            return new ResponseEntity<>(transactions.stream().map(transaction -> new TransactionDTO(transaction)).collect(Collectors.toList()), HttpStatus.OK);
+            return new ResponseEntity<>(transactions.stream().map(TransactionDTO::new).collect(Collectors.toList()), HttpStatus.OK);
         }else {
             return new ResponseEntity<>("Error, Transactions not found", HttpStatus.NOT_FOUND);
         }
@@ -65,20 +67,18 @@ public class TransactionControllers {
         if (transferDTO.amount() <= 0) {
             return new ResponseEntity<>("Amount must be greater than zero", HttpStatus.BAD_REQUEST);
         }
-        if (transferDTO.type() == null || (!transferDTO.type().equals(TypeTransaction.DEBIT.name()) && !transferDTO.type().equals(TypeTransaction.CREDIT.name()))) {
-              return new ResponseEntity<>("Invalid transaction type", HttpStatus.BAD_REQUEST);
-        }
         if (transferDTO.sourceAccountNumber().equals(transferDTO.destinationAccountNumber())) {
             return new ResponseEntity<>("Source and destination account numbers cannot be the same", HttpStatus.BAD_REQUEST);
         }
 
-        Account sourceAccount = accountRepository.findByNumber(transferDTO.sourceAccountNumber());
+        Account sourceAccount = accountService.findByNumber(transferDTO.sourceAccountNumber());
         if (sourceAccount == null){
             return new ResponseEntity<>("Source account does not exist", HttpStatus.NOT_FOUND);
         }
 
         String currentUserName = authentication.getName();
-        Client client = clientRepository.findByEmail(currentUserName);
+        Client client = clientService.findByEmail(currentUserName);
+
         if (client == null){
           return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
         }
@@ -91,27 +91,33 @@ public class TransactionControllers {
             return new ResponseEntity<>("Insufficient balance in source account", HttpStatus.BAD_REQUEST);
         }
 
-        Account destinationAccount = accountRepository.findByNumber(transferDTO.destinationAccountNumber());
+        Account destinationAccount = accountService.findByNumber(transferDTO.destinationAccountNumber());
+
         if (destinationAccount == null){
             return new ResponseEntity<>("Destination account does not exist", HttpStatus.NOT_FOUND);
         }
 
-        if (transferDTO.type().equals("DEBIT")) {
-            Transaction debitTransaction = new Transaction(LocalDateTime.now(), transferDTO.description() + " " + transferDTO.destinationAccountNumber(), -transferDTO.amount(), TypeTransaction.DEBIT);
-            debitTransaction.setHostAccount(sourceAccount);
-            transactionRepository.save(debitTransaction);
-            sourceAccount.setBalance(sourceAccount.getBalance() - transferDTO.amount());
-            destinationAccount.setBalance(destinationAccount.getBalance() + transferDTO.amount());
-            accountRepository.save(sourceAccount);
-        } else if (transferDTO.type().equals("CREDIT")) {
-            Transaction creditTransaction = new Transaction(LocalDateTime.now(), transferDTO.description() + " " + transferDTO.destinationAccountNumber(), transferDTO.amount(), TypeTransaction.CREDIT);
-            creditTransaction.setHostAccount(destinationAccount);
-            transactionRepository.save(creditTransaction);
-            destinationAccount.setBalance(destinationAccount.getBalance() + transferDTO.amount());
-            accountRepository.save(destinationAccount);
-        }
+        Transaction debitTransaction = new Transaction(LocalDateTime.now(), transferDTO.description() + " " + transferDTO.destinationAccountNumber(), -transferDTO.amount(), TypeTransaction.DEBIT);
+        Transaction creditTransaction = new Transaction(LocalDateTime.now(), transferDTO.description() + " " + transferDTO.destinationAccountNumber(), transferDTO.amount(), TypeTransaction.CREDIT);
+
+        debitTransaction.setHostAccount(sourceAccount);
+        creditTransaction.setHostAccount(destinationAccount);
+
+        transactionService.saveTransaction(creditTransaction);
+        transactionService.saveTransaction(debitTransaction);
+
+        sourceAccount.addTransaction(debitTransaction);
+        destinationAccount.addTransaction(creditTransaction);
+
+        sourceAccount.setBalance(sourceAccount.getBalance() - transferDTO.amount());
+        destinationAccount.setBalance(destinationAccount.getBalance() + transferDTO.amount());
+
+        accountService.saveAccount(sourceAccount);
+        accountService.saveAccount(destinationAccount);
+
 
         return new ResponseEntity<>("Transaction succesfull", HttpStatus.CREATED);
+
       } catch (Exception e){
           System.out.println(e.getMessage());
           return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);

@@ -1,4 +1,4 @@
-package com.mindhubbrothers.homebanking.servicesSecurity;
+package com.mindhubbrothers.homebanking.services.servicesSecurity;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -2,7 +2,7 @@ package com.mindhubbrothers.homebanking.controllers;
 
 import com.mindhubbrothers.homebanking.dto.ClientDTO;
 import com.mindhubbrothers.homebanking.models.Client;
-import com.mindhubbrothers.homebanking.repositories.ClientRepository;
+import com.mindhubbrothers.homebanking.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,19 +13,18 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 @RestController
-@RequestMapping("/api/Clients")
+@RequestMapping("/api/clients")
 @CrossOrigin(origins = "*")
 public class ClientControllers {
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientService clientService;
 
     @GetMapping("/hello")
     public String getClients(){return "Hello Clients!";}
 
     @GetMapping("/")
    public ResponseEntity<?> getAllClients(){
-        List<Client> clientList = clientRepository.findAll();
-        List<ClientDTO> clientDTOList = clientList.stream().map(client -> new ClientDTO(client)).collect(Collectors.toList());
+        List<ClientDTO> clientDTOList = clientService.getListClientsDTO();
         if (!clientDTOList.isEmpty()){
             return new ResponseEntity<>(clientDTOList, HttpStatus.OK);
         }else {
@@ -34,11 +33,11 @@ public class ClientControllers {
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getClient (@PathVariable long id){
-        Client client = clientRepository.findById(id).orElse(null);
+        Client client = clientService.findById(id);
         if (client == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }else {
-            ClientDTO clientDTO = new ClientDTO(client);
+            ClientDTO clientDTO = clientService.getClientDTO(client);
             return new ResponseEntity<>(clientDTO, HttpStatus.OK);
         }
     }

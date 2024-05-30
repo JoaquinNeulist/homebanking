@@ -5,6 +5,7 @@ import com.mindhubbrothers.homebanking.models.Account;
 import com.mindhubbrothers.homebanking.models.Client;
 import com.mindhubbrothers.homebanking.repositories.AccountRepository;
 import com.mindhubbrothers.homebanking.repositories.ClientRepository;
+import com.mindhubbrothers.homebanking.services.ClientService;
 import com.mindhubbrothers.homebanking.utils.GenerateAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,10 +25,7 @@ import java.util.stream.Collectors;
 public class AccountControllers {
 
     @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private ClientRepository clientRepository;
+    private ClientService clientService;
 
     @Autowired
     private GenerateAccount generateAccount;
@@ -38,7 +34,7 @@ public class AccountControllers {
     public ResponseEntity<?> createAccounts(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
-        Client client = clientRepository.findByEmail(currentUserName);
+        Client client = clientService.findByEmail(currentUserName);
 
         if (client == null){
             return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
@@ -55,7 +51,7 @@ public class AccountControllers {
     public ResponseEntity<?> getAccounts(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
-        Client client = clientRepository.findByEmail(currentUserName);
+        Client client = clientService.findByEmail(currentUserName);
 
         if (client == null){
             return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);

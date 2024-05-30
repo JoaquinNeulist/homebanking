@@ -40,8 +40,8 @@ public class WebConfig {
                         //desactiva las FrameOption, acceder console-h2
                 ))
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**", "/api/transactions").permitAll()
-                                .requestMatchers("/api/Clients/**", "/api/Accounts/**", "/api/Transactions/**").hasRole("ADMIN")
+                        authorize.requestMatchers("/api/auth/login", "/api/clients/**","/api/auth/register", "/h2-console/**", "/api/transactions", "/api/clients").permitAll()
+                                .requestMatchers("/api/Accounts/**", "/api/Transactions/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 //permite el acceso a las rutas
                 )

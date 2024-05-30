@@ -1,6 +1,6 @@
 package com.mindhubbrothers.homebanking.filters;
 
-import com.mindhubbrothers.homebanking.servicesSecurity.JwtUtilService;
+import com.mindhubbrothers.homebanking.services.servicesSecurity.JwtUtilService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
