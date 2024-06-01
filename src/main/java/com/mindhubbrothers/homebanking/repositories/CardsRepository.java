@@ -14,4 +14,5 @@ public interface CardsRepository extends JpaRepository <Cards, Long>{
     Cards findByOwnerAndColorAndType(Client owner, CardColor color, CardType type);
     List<Cards> findByOwner(Client owner);
     boolean existsByNumber(String number);
+
 }

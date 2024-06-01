@@ -1,68 +1,27 @@
 package com.mindhubbrothers.homebanking.controllers;
 
-import com.mindhubbrothers.homebanking.dto.CardsDTO;
-import com.mindhubbrothers.homebanking.models.CardColor;
-import com.mindhubbrothers.homebanking.models.CardType;
-import com.mindhubbrothers.homebanking.models.Cards;
-import com.mindhubbrothers.homebanking.models.Client;
-import com.mindhubbrothers.homebanking.repositories.CardsRepository;
+import com.mindhubbrothers.homebanking.dto.CardCreationDTO;
 import com.mindhubbrothers.homebanking.services.CardsService;
-import com.mindhubbrothers.homebanking.services.ClientService;
-import com.mindhubbrothers.homebanking.utils.GenerateCards;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/clients/current")
 public class CardController {
 
     @Autowired
-    private ClientService clientService;
-
-    @Autowired
-    private GenerateCards generateCards;
-
-    @Autowired
     private CardsService cardsService;
 
     @PostMapping("/cards")
-    public ResponseEntity<?> createCard(
-            @RequestParam("color")CardColor color,
-            @RequestParam("type")CardType type
-            ){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = authentication.getName();
-        Client client = clientService.findByEmail(currentUserName);
-        if (client == null){
-            return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
-        }
-        Cards newCard = generateCards.generateCard(client, color, type);
-        if (newCard == null){
-            return new ResponseEntity<>("Error, client already has a card of the same type and color", HttpStatus.FORBIDDEN);
-        }
-        return new ResponseEntity<>("Card created succesfully", HttpStatus.CREATED);
+    public ResponseEntity<?> createCard( @RequestBody CardCreationDTO cardCreationDTO, Authentication authentication){
+        return cardsService.createCard(cardCreationDTO, authentication);
     }
 
     @GetMapping("/cards")
-    public ResponseEntity<?> getCards(){
-        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = authentication.getName();
-        Client client = clientService.findByEmail(currentUserName);
-        if (client == null){
-            return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
-        }
-        List<Cards> cards = cardsService.findByOwner(client);
-        List<CardsDTO> cardsDTOS = cards.stream()
-                .map(card->new CardsDTO(card))
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(cardsDTOS, HttpStatus.OK);
+    public ResponseEntity<?> getCards(Authentication authentication){
+        return cardsService.getCards(authentication);
     }
 }
 

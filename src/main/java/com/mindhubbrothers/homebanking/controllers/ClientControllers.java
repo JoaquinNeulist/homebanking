@@ -9,9 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
 @RestController
 @RequestMapping("/api/clients")
 @CrossOrigin(origins = "*")
@@ -24,9 +22,8 @@ public class ClientControllers {
 
     @GetMapping("/")
    public ResponseEntity<?> getAllClients(){
-        List<ClientDTO> clientDTOList = clientService.getListClientsDTO();
-        if (!clientDTOList.isEmpty()){
-            return new ResponseEntity<>(clientDTOList, HttpStatus.OK);
+        if (clientService.getListClientsDTO() != null){
+            return new ResponseEntity<>(clientService.getListClientsDTO(), HttpStatus.OK);
         }else {
             return new ResponseEntity<>("Clients not found", HttpStatus.NOT_FOUND);
         }
@@ -34,11 +31,10 @@ public class ClientControllers {
     @GetMapping("/{id}")
     public ResponseEntity<?> getClient (@PathVariable long id){
         Client client = clientService.findById(id);
-        if (client == null){
+        if (clientService.getClientDTO(client) == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }else {
-            ClientDTO clientDTO = clientService.getClientDTO(client);
-            return new ResponseEntity<>(clientDTO, HttpStatus.OK);
+            return new ResponseEntity<>(clientService.getClientDTO(client), HttpStatus.OK);
         }
     }
 }

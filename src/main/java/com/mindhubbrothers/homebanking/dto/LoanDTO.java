@@ -1,12 +1,11 @@
 package com.mindhubbrothers.homebanking.dto;
 
-import com.mindhubbrothers.homebanking.models.ClientLoans;
 import com.mindhubbrothers.homebanking.models.Loans;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class LoansDTO {
+public class LoanDTO {
 
     private long id;
 
@@ -16,7 +15,7 @@ public class LoansDTO {
 
     private Set<Integer> payments = new HashSet<>();
 
-    public LoansDTO(Loans loans) {
+    public LoanDTO(Loans loans) {
         this.id = loans.getId();
         this.name = loans.getName();
         this.maxAmount = loans.getMaxAmount();
