@@ -42,6 +42,8 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public void applyForLoan(LoanApplicationDTO loanApplicationDTO, Client client) {
         Loans loan = loansRepository.findById(loanApplicationDTO.loanId()).orElseThrow(() -> new RuntimeException("Loan not found"));
+        double finalAmount = 0;
+        double installments = loanApplicationDTO.amount()/loanApplicationDTO.payments();
         if (loanApplicationDTO.amount() <= 0 || loanApplicationDTO.payments() <= 0){
             throw new RuntimeException("Amount and payments must be greater than 0");
         }
@@ -58,14 +60,21 @@ public class LoanServiceImpl implements LoanService {
         if (!destinationAccount.getOwner().equals(client)){
             throw new RuntimeException("Destination account does not belong to client");
         }
-        double finalAmount = loanApplicationDTO.amount() * 1.2;
-
+        if (loanApplicationDTO.payments().equals(12)){
+            finalAmount = loanApplicationDTO.amount() * 1.2;
+        }
+        if (loanApplicationDTO.payments() > 12){
+            finalAmount = loanApplicationDTO.amount() * 1.25;
+        }
+        if (loanApplicationDTO.payments() < 12){
+            finalAmount = loanApplicationDTO.amount() * 1.15;
+        }
         ClientLoans clientLoans = new ClientLoans(finalAmount, loanApplicationDTO.payments());
         clientLoans.setClient(client);
         clientLoans.setLoans(loan);
         clientLoanRepository.save(clientLoans);
 
-        Transaction creditTransaction = new Transaction(LocalDateTime.now(), loan.getName() + " approved", finalAmount, TypeTransaction.CREDIT);
+        Transaction creditTransaction = new Transaction(LocalDateTime.now(), loan.getName() + " approved", loanApplicationDTO.amount(), TypeTransaction.CREDIT);
         creditTransaction.setHostAccount(destinationAccount);
         transactionRepository.save(creditTransaction);
 
