@@ -15,7 +15,7 @@ public class Loans {
 
     private String name;
 
-    private int maxAmount;
+    private double maxAmount;
 
     @ElementCollection
     private Set<Integer> payments = new HashSet<>();
@@ -26,7 +26,7 @@ public class Loans {
     public Loans() {
     }
 
-    public Loans(Set<Integer> payments, int maxAmount, String name) {
+    public Loans(Set<Integer> payments, double maxAmount, String name) {
         this.payments = payments;
         this.maxAmount = maxAmount;
         this.name = name;
@@ -44,7 +44,7 @@ public class Loans {
         this.name = name;
     }
 
-    public int getMaxAmount() {
+    public double getMaxAmount() {
         return maxAmount;
     }
 

@@ -20,7 +20,6 @@ public class Transaction {
     private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "Account_Id")
     private Account hostAccount;
 
     public Transaction() {

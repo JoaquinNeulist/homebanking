@@ -11,7 +11,7 @@ public class LoanDTO {
 
     private String name;
 
-    private int maxAmount;
+    private double maxAmount;
 
     private Set<Integer> payments = new HashSet<>();
 
@@ -30,7 +30,7 @@ public class LoanDTO {
         return name;
     }
 
-    public int getMaxAmount() {
+    public double getMaxAmount() {
         return maxAmount;
     }
 

@@ -7,7 +7,9 @@ import com.mindhubbrothers.homebanking.repositories.AccountRepository;
 import com.mindhubbrothers.homebanking.repositories.ClientLoanRepository;
 import com.mindhubbrothers.homebanking.repositories.LoansRepository;
 import com.mindhubbrothers.homebanking.repositories.TransactionRepository;
+import com.mindhubbrothers.homebanking.services.AccountService;
 import com.mindhubbrothers.homebanking.services.LoanService;
+import com.mindhubbrothers.homebanking.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +26,10 @@ public class LoanServiceImpl implements LoanService {
     private ClientLoanRepository clientLoanRepository;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
 
     @Autowired
-    private TransactionRepository transactionRepository;
+    private TransactionService transactionService;
 
     @Override
     public List<LoanDTO> getAllLoans() {
@@ -53,7 +55,7 @@ public class LoanServiceImpl implements LoanService {
         if (!loan.getPayments().contains(loanApplicationDTO.payments())){
             throw new RuntimeException("Number of installments must be one of " + loan.getPayments());
         }
-        Account destinationAccount = accountRepository.findByNumber(loanApplicationDTO.destinationAccountNumber());
+        Account destinationAccount = accountService.findByNumber(loanApplicationDTO.destinationAccountNumber());
         if (destinationAccount == null){
             throw new RuntimeException("Destination account not found");
         }
@@ -76,9 +78,9 @@ public class LoanServiceImpl implements LoanService {
 
         Transaction creditTransaction = new Transaction(LocalDateTime.now(), loan.getName() + " approved", loanApplicationDTO.amount(), TypeTransaction.CREDIT);
         creditTransaction.setHostAccount(destinationAccount);
-        transactionRepository.save(creditTransaction);
+        transactionService.saveTransaction(creditTransaction);
 
         destinationAccount.setBalance(destinationAccount.getBalance() + loanApplicationDTO.amount());
-        accountRepository.save(destinationAccount);
+        accountService.saveAccount(destinationAccount);
     }
 }
