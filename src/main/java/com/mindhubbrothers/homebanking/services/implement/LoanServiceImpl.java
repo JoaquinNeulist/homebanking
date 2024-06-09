@@ -1,5 +1,6 @@
 package com.mindhubbrothers.homebanking.services.implement;
 
+import com.mindhubbrothers.homebanking.dto.ClientLoanDTO;
 import com.mindhubbrothers.homebanking.dto.LoanApplicationDTO;
 import com.mindhubbrothers.homebanking.dto.LoanDTO;
 import com.mindhubbrothers.homebanking.models.*;
@@ -42,8 +43,17 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    public List<ClientLoanDTO> getLoansByClient(Client client) {
+        return clientLoanRepository.findByClient(client).stream().map(ClientLoanDTO::new).collect(Collectors.toList());
+    }
+
+    @Override
     public void applyForLoan(LoanApplicationDTO loanApplicationDTO, Client client) {
         Loans loan = loansRepository.findById(loanApplicationDTO.loanId()).orElseThrow(() -> new RuntimeException("Loan not found"));
+        boolean alreadyHasLoan = clientLoanRepository.findByClientAndLoans(client, loan).isPresent();
+        if (alreadyHasLoan){
+            throw new RuntimeException("Client already has this loan");
+        }
         double finalAmount = 0;
         double installments = loanApplicationDTO.amount()/loanApplicationDTO.payments();
         if (loanApplicationDTO.amount() <= 0 || loanApplicationDTO.payments() <= 0){

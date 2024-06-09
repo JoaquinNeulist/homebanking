@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
         }
         Client client = new Client(registerDto.firstName(), registerDto.lastName(), registerDto.email(), passwordEncoder.encode(registerDto.password()));
         clientService.saveClient(client);
-        accountService.createAccountForClient(client);
+        accountService.createAccount(client);
         return new ResponseEntity<>("Client and account created successfully", HttpStatus.CREATED);
     }
 

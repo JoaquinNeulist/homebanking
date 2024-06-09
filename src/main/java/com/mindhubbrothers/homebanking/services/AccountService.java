@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface AccountService {
 
+    List<Account> getAllAccounts();
+
     Account findByNumber(String number);
 
     Boolean existsByNumber(String number);
@@ -18,9 +20,7 @@ public interface AccountService {
 
     List<AccountDTO> getAccountsDTO(Client client);
 
-    ResponseEntity<?> createAccount(Authentication authentication);
-
-    void createAccountForClient(Client client);
+    ResponseEntity<?> createAccount(Client client);
 
     ResponseEntity<?> getAccounts(Authentication authentication); //get
 }

@@ -22,6 +22,8 @@ public class Client {
 
     public String password;
 
+    private Boolean isAdmin;
+
     @OneToMany(mappedBy = "owner")
     private List<Account> accounts = new ArrayList<>();
 
@@ -45,7 +47,9 @@ public class Client {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.isAdmin = false;
     }
+
 
     public long getId() {
         return id;
@@ -81,6 +85,14 @@ public class Client {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
     }
 
     public List<Account> getAccounts() {

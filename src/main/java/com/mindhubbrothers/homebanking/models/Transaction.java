@@ -11,9 +11,10 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Enumerated(value = EnumType.STRING)
     private TypeTransaction type;
 
-    private double amount;
+    private Double amount;
 
     private String description;
 
@@ -25,7 +26,7 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(LocalDateTime date, String description, double amount, TypeTransaction type) {
+    public Transaction(LocalDateTime date, String description, Double amount, TypeTransaction type) {
         this.date = date;
         this.description = description;
         this.amount = amount;

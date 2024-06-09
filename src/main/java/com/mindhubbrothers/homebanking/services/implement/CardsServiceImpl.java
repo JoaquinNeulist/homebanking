@@ -72,11 +72,11 @@ public class CardsServiceImpl implements CardsService {
         }
         Cards existingCard = cardsRepository.findByOwnerAndColorAndType(client, cardCreationDTO.color(), cardCreationDTO.type());
         if (existingCard != null){
-            return new ResponseEntity<>("Error, card already exists", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Error, card already exists", HttpStatus.FORBIDDEN);
         }
         Cards newCard = generateCard(client, cardCreationDTO.color(), cardCreationDTO.type());
         if (newCard == null) {
-            return new ResponseEntity<>("Error, card generation failed", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Error, card generation failed", HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity<>("Card created successfully", HttpStatus.CREATED);
     }

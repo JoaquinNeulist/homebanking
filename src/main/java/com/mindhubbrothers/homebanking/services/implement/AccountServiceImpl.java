@@ -26,6 +26,11 @@ public class AccountServiceImpl implements AccountService {
     private ClientService clientService;
 
     @Override
+    public List<Account> getAllAccounts() {
+      return accountRepository.findAll();
+    }
+
+    @Override
     public Account findByNumber(String number) {
         return accountRepository.findByNumber(number);
     }
@@ -46,22 +51,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public ResponseEntity<?> createAccount(Authentication authentication) {
-        String currentUserName = authentication.getName();
-        Client client = clientService.findByEmail(currentUserName);
-        if (client == null) {
-            return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> createAccount(Client client) {
+        if (client.getAccounts().size() >= 3){
+            return new ResponseEntity<>("Client already has 3 accounts", HttpStatus.FORBIDDEN);
         }
-        if (client.getAccounts().size() >= 3) {
-            return new ResponseEntity<>("Error, client already has 3 accounts", HttpStatus.FORBIDDEN);
-        }
-        Account newAccount = createAccount(client);
-        return new ResponseEntity<>("Account created successfully.", HttpStatus.CREATED);
-    }
+        Account newAccount = createNewAccount(client);
+        clientService.saveClient(client);
+        return new ResponseEntity<>("Account created successfully", HttpStatus.CREATED);
 
-    @Override
-    public void createAccountForClient(Client client) {
-        createAccount(client);
     }
 
     @Override
@@ -77,7 +74,7 @@ public class AccountServiceImpl implements AccountService {
         return new ResponseEntity<>(getAccountsDTO(client), HttpStatus.OK);
     }
 
-    private Account createAccount(Client client) {
+    private Account createNewAccount(Client client) {
         String accountNumber = generateAccountNumber();
         Account newAccount = new Account(accountNumber, LocalDate.now(), 0.0);
         newAccount.setOwner(client);

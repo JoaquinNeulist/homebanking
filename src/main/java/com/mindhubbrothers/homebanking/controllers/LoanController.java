@@ -29,7 +29,7 @@ public class LoanController {
         String currentUserName = authentication.getName();
         Client client = clientService.findByEmail(currentUserName);
         if (client == null) {
-            return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Client not found", HttpStatus.FORBIDDEN);
         }
         try {
             loanService.applyForLoan(loanApplicationDTO, client);
@@ -38,6 +38,16 @@ public class LoanController {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/client/loans")
+    public ResponseEntity<?> getLoansByClient(Authentication authentication){
+        String currentUserName = authentication.getName();
+        Client client = clientService.findByEmail(currentUserName);
+        if (client == null) {
+            return new ResponseEntity<>("Client not found", HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(loanService.getLoansByClient(client), HttpStatus.OK);
     }
 
     @GetMapping("/loans")

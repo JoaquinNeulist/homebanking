@@ -36,7 +36,7 @@ public class TransactionControllers {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("/")
+    @GetMapping("/transactions/getTransactions")
     public ResponseEntity<?> getTransactions(){
         return transactionService.getTransactions();
     }
