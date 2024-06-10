@@ -41,7 +41,7 @@ class HomebankingApplicationTests {
 
 	@Test
 	public void userCanSignUp() throws Exception {
-		RegisterDto newUser = new RegisterDto("Test", "Mindhub", "Test@mindhub", "789");
+		RegisterDto newUser = new RegisterDto("Test", "Mindhub", "Test@mindhub.com", "789");
 		mockMvc.perform(
 				post("/api/auth/signup")
 						.contentType("application/json")
