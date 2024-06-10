@@ -91,7 +91,11 @@ public class CardsServiceImpl implements CardsService {
             return new ResponseEntity<>("Error, card already exists", HttpStatus.FORBIDDEN);
         }
 
-        String cardNumber = CardNumberGenerator.generate();
+        String cardNumber;
+        do {
+            cardNumber = CardNumberGenerator.generate();
+        }
+        while (cardsRepository.existsByNumber(cardNumber));
         String cardHolder = client.getFirstName() + " " + client.getLastName();
         int cvv = CVVGenerator.generate();
         LocalDate startDate = LocalDate.now();

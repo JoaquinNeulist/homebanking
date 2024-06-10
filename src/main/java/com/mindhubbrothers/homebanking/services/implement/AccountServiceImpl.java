@@ -69,8 +69,12 @@ public class AccountServiceImpl implements AccountService {
             return new ResponseEntity<>("Client already has 3 accounts", HttpStatus.FORBIDDEN);
         }
 
-        String accountNumber = AccountNumberGenerator.generate()
-                ;
+        String accountNumber;
+        do {
+            accountNumber = AccountNumberGenerator.generate();
+        }
+        while (accountRepository.existsByNumber(accountNumber));
+
         Account newAccount = new Account(accountNumber, LocalDate.now(), 0.0);
         newAccount.setOwner(client);
         accountRepository.save(newAccount);
