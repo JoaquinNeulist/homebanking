@@ -9,6 +9,8 @@ import com.mindhubbrothers.homebanking.models.Client;
 import com.mindhubbrothers.homebanking.repositories.CardsRepository;
 import com.mindhubbrothers.homebanking.services.CardsService;
 import com.mindhubbrothers.homebanking.services.ClientService;
+import com.mindhubbrothers.homebanking.utils.CVVGenerator;
+import com.mindhubbrothers.homebanking.utils.CardNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,24 +65,6 @@ public class CardsServiceImpl implements CardsService {
     }
 
     @Override
-    public ResponseEntity<?> createCard(CardCreationDTO cardCreationDTO, Authentication authentication) {
-        String currentUserName = authentication.getName();
-        Client client = clientService.findByEmail(currentUserName);
-        if (client == null){
-            return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
-        }
-        Cards existingCard = cardsRepository.findByOwnerAndColorAndType(client, cardCreationDTO.color(), cardCreationDTO.type());
-        if (existingCard != null){
-            return new ResponseEntity<>("Error, card already exists", HttpStatus.FORBIDDEN);
-        }
-        Cards newCard = generateCard(client, cardCreationDTO.color(), cardCreationDTO.type());
-        if (newCard == null) {
-            return new ResponseEntity<>("Error, card generation failed", HttpStatus.FORBIDDEN);
-        }
-        return new ResponseEntity<>("Card created successfully", HttpStatus.CREATED);
-    }
-
-    @Override
     public ResponseEntity<?> getCards(Authentication authentication) {
         String currentUserName = authentication.getName();
         Client client = clientService.findByEmail(currentUserName);
@@ -95,43 +78,30 @@ public class CardsServiceImpl implements CardsService {
         return new ResponseEntity<>(cardsDTOS, HttpStatus.OK);
     }
 
-    private Cards generateCard(Client client, CardColor color, CardType type) {
-        Cards existingCards = cardsRepository.findByOwnerAndColorAndType(client, color, type);
-        if (existingCards != null) {
-            return null; // Ya tiene una tarjeta del mismo tipo y color
+    @Override
+    public ResponseEntity<?> createCard(CardCreationDTO cardCreationDTO, Authentication authentication) {
+        String currentUserName = authentication.getName();
+        Client client = clientService.findByEmail(currentUserName);
+        if (client == null) {
+            return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
         }
-        String cardNumber = generateCardNumber();
+
+        Cards existingCard = cardsRepository.findByOwnerAndColorAndType(client, cardCreationDTO.color(), cardCreationDTO.type());
+        if (existingCard != null) {
+            return new ResponseEntity<>("Error, card already exists", HttpStatus.FORBIDDEN);
+        }
+
+        String cardNumber = CardNumberGenerator.generate();
         String cardHolder = client.getFirstName() + " " + client.getLastName();
-        int cvv = generateCVV();
+        int cvv = CVVGenerator.generate();
         LocalDate startDate = LocalDate.now();
         LocalDate expirationDate = startDate.plusYears(5);
 
-        Cards newCard = new Cards(type, color, cardNumber, startDate, expirationDate, cvv, cardHolder);
+        Cards newCard = new Cards(cardCreationDTO.type(), cardCreationDTO.color(), cardNumber, startDate, expirationDate, cvv, cardHolder);
         newCard.setOwner(client);
         cardsRepository.save(newCard);
-        return newCard;
+
+        return new ResponseEntity<>("Card created successfully", HttpStatus.CREATED);
     }
 
-    private String generateCardNumber() {
-        Random random = new Random();
-        String cardNumber;
-        do {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    stringBuilder.append(random.nextInt(10));
-                }
-                if (i < 3) {
-                    stringBuilder.append("-");
-                }
-            }
-            cardNumber = stringBuilder.toString();
-        } while (cardsRepository.existsByNumber(cardNumber));
-        return cardNumber;
-    }
-
-    private int generateCVV() {
-        Random random = new Random();
-        return random.nextInt(900) + 100;
-    }
 }

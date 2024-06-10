@@ -41,7 +41,7 @@ public class WebConfig {
                 ))
                 .authorizeHttpRequests(authorize ->
                         authorize.requestMatchers("/api/auth/login", "/api/auth/signup", "/h2-console/**").permitAll()
-                                .requestMatchers( "/api/auth/current", "/api/auth/current/**", "/api/clients/current/accounts","/api/transactions", "/api/loans").hasRole("CLIENT")
+                                .requestMatchers( "/api/auth/current", "/api/auth/current/**", "/api/clients/current/accounts", "/api/clients/current/cards","/api/transactions", "/api/loans").hasRole("CLIENT")
                                 .requestMatchers( "/api/transactions/**", "/api/clients", "/api/clients/**","/api/clients/current/accounts/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 //permite el acceso a las rutas
