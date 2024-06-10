@@ -32,9 +32,6 @@ class HomebankingApplicationTests {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@Autowired
-	private AccountRepository accountRepository;
-
 	@Test
 	void contextLoads() {
 	}
