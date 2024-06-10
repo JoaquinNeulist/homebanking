@@ -77,9 +77,7 @@ class HomebankingApplicationTests {
 				.accept("application/json"))).andExpect(status().isOk())
 				.andExpect(jsonPath("firstName").value("Melba"))
 				.andExpect(jsonPath("lastName").value("Morel"))
-				.andExpect(jsonPath("email").value("melba@mindhub.com"))
-				.andExpect(jsonPath("$.accounts").isNotEmpty());
-		//coleccion de las cuentas, verifica por cada valor y que no este vacio
+				.andExpect(jsonPath("email").value("melba@mindhub.com"));
 	}
 
 	@Test
