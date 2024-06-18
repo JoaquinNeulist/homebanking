@@ -14,7 +14,7 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173",""));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","https://homebanking-react.onrender.com"));
         //el link es el origen permitido para hacer solicitudes a esta aplicacion
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
         //solo los metodos http dentro del array estan permitidos
