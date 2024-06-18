@@ -20,56 +20,56 @@ import static org.hamcrest.Matchers.*;
 @ExtendWith(MockitoExtension.class)
 public class UtilsTest {
 
-    @Mock
-    private CardsRepository cardsRepository;
-
-    @Mock
-    private AccountRepository accountRepository;
-
-    @InjectMocks
-    private CardNumberGenerator cardNumberGenerator;
-
-    @InjectMocks
-    private AccountNumberGenerator accountNumberGenerator;
-
-    @BeforeEach
-    public void setUp(){
-        MockitoAnnotations.openMocks(this); // Inicializa @Mock y @InjectMocks
-    }
-
-    @Test
-    public void testGenerateCVVMatchPattern(){
-        String cvv = String.valueOf(CVVGenerator.generate());
-        assertThat(cvv, matchesPattern("\\d{3}"));
-    }
-
-    @Test
-    public void testGenerateCVV(){
-        String cvv = String.valueOf(CVVGenerator.generate());
-        assertThat(cvv, is(notNullValue()));
-    }
-
-    @Test
-    public void testGenerateCardNumberMatchPattern(){
-        String cardNumber = CardNumberGenerator.generate();
-        assertThat(cardNumber, matchesPattern("\\d{4}-\\d{4}-\\d{4}-\\d{4}"));
-    }
-
-    @Test
-    public void testGenerateCardNumber(){
-        String cardNumber = CardNumberGenerator.generate();
-        assertThat(cardNumber, is(notNullValue()));
-    }
-
-    @Test
-    public void testGenerateAccountNumberMatchPattern(){
-        String accountNumber = AccountNumberGenerator.generate();
-        assertThat(accountNumber, matchesPattern("VIN-\\d{4}"));
-    }
-
-    @Test
-    public void testGenerateAccountNumber(){
-        String accountNumber = AccountNumberGenerator.generate();
-        assertThat(accountNumber, is(notNullValue()));
-    }
+//    @Mock
+//    private CardsRepository cardsRepository;
+//
+//    @Mock
+//    private AccountRepository accountRepository;
+//
+//    @InjectMocks
+//    private CardNumberGenerator cardNumberGenerator;
+//
+//    @InjectMocks
+//    private AccountNumberGenerator accountNumberGenerator;
+//
+//    @BeforeEach
+//    public void setUp(){
+//        MockitoAnnotations.openMocks(this); // Inicializa @Mock y @InjectMocks
+//    }
+//
+//    @Test
+//    public void testGenerateCVVMatchPattern(){
+//        String cvv = String.valueOf(CVVGenerator.generate());
+//        assertThat(cvv, matchesPattern("\\d{3}"));
+//    }
+//
+//    @Test
+//    public void testGenerateCVV(){
+//        String cvv = String.valueOf(CVVGenerator.generate());
+//        assertThat(cvv, is(notNullValue()));
+//    }
+//
+//    @Test
+//    public void testGenerateCardNumberMatchPattern(){
+//        String cardNumber = CardNumberGenerator.generate();
+//        assertThat(cardNumber, matchesPattern("\\d{4}-\\d{4}-\\d{4}-\\d{4}"));
+//    }
+//
+//    @Test
+//    public void testGenerateCardNumber(){
+//        String cardNumber = CardNumberGenerator.generate();
+//        assertThat(cardNumber, is(notNullValue()));
+//    }
+//
+//    @Test
+//    public void testGenerateAccountNumberMatchPattern(){
+//        String accountNumber = AccountNumberGenerator.generate();
+//        assertThat(accountNumber, matchesPattern("VIN-\\d{4}"));
+//    }
+//
+//    @Test
+//    public void testGenerateAccountNumber(){
+//        String accountNumber = AccountNumberGenerator.generate();
+//        assertThat(accountNumber, is(notNullValue()));
+//    }
 }

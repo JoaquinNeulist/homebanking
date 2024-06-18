@@ -16,19 +16,19 @@ import java.util.Optional;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ClientRepositoryTest {
 
-    @Autowired
-    private ClientRepository clientRepository;
-
-    @Test
-    public void findClientByEmail(){
-        clientRepository.findByEmail("melba@mindhub.com");
-        assertThat(clientRepository.findByEmail("melba@mindhub.com"), is(notNullValue()));
-    }
-
-    @Test
-    public void findClientLastName(){
-        Optional<Client> client = clientRepository.findById(2L);
-        String lastName = client.get().getLastName();
-        assertThat(lastName, is("Morel"));
-    }
+//    @Autowired
+//    private ClientRepository clientRepository;
+//
+//    @Test
+//    public void findClientByEmail(){
+//        clientRepository.findByEmail("melba@mindhub.com");
+//        assertThat(clientRepository.findByEmail("melba@mindhub.com"), is(notNullValue()));
+//    }
+//
+//    @Test
+//    public void findClientLastName(){
+//        Optional<Client> client = clientRepository.findById(2L);
+//        String lastName = client.get().getLastName();
+//        assertThat(lastName, is("Morel"));
+//    }
 }

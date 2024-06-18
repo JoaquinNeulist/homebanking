@@ -1,4 +1,4 @@
-FROM gradle:8.7
+FROM gradle:8.7-jdk17-alpine
 COPY . .
 EXPOSE 8080
 RUN gradle build

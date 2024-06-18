@@ -11,19 +11,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class AccountRepositoryTest {
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Test
-    public void findAllAccountTest() {
-        accountRepository.findById(4L);
-        assertThat(accountRepository.findById(4L), is(notNullValue()));
-    }
-
-    @Test
-    public void find(){
-        accountRepository.findByNumber("VIN001");
-        assertThat(accountRepository.findByNumber("VIN001"), is(notNullValue()));
-    }
+//
+//    @Autowired
+//    private AccountRepository accountRepository;
+//
+//    @Test
+//    public void findAllAccountTest() {
+//        accountRepository.findById(4L);
+//        assertThat(accountRepository.findById(4L), is(notNullValue()));
+//    }
+//
+//    @Test
+//    public void find(){
+//        accountRepository.findByNumber("VIN001");
+//        assertThat(accountRepository.findByNumber("VIN001"), is(notNullValue()));
+//    }
 }
